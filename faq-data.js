@@ -18,9 +18,10 @@ window.FAQ_ITEMS = [
     ],
 
     note: "YouTube PremiumはLINEの広告を消すサービスではありません。"
-  }
-
+  },
+  
   {
+    
     id: "faq-question-2",
     category: "お寿司について",
     icon: "i-faq",
