@@ -1,99 +1,1392 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#15324f">
-  <meta name="description" content="必要なページにワンタップでアクセスできるリンク集です。">
-  <title>リンク一覧</title>
+  <meta name="theme-color" content="#12372b">
+  <meta name="description" content="中井晴太 LINE専用ページ。ご案内とよくあるご質問をまとめています。">
+  <title>中井晴太 LINE専用ページ</title>
+
   <style>
     :root {
-      --navy: #15324f;
-      --blue: #2563eb;
-      --light-blue: #eff6ff;
-      --background: #f5f8fc;
-      --text: #172a40;
-      --muted: #56677a;
-      --border: #dce5ee;
+      --ink: #18342a;
+      --ink-2: #3d5449;
+      --muted: #6c8175;
+      --green: #14a572;
+      --green-dark: #0b8057;
+      --mint: #e8f8f0;
+      --cream: #fbfcf8;
+      --line: #dfe9df;
+      --shadow: 0 18px 50px rgba(22,62,42,.07);
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif;
-      color: var(--text);
-      background: radial-gradient(ellipse at 50% -15%, #dfebff 0, transparent 60%), var(--background);
+      background: var(--cream);
+      color: var(--ink);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans CJK JP",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
-    .wrap { max-width: 690px; margin: 0 auto; padding: 68px 20px 48px; }
-    .eyebrow { margin: 0 0 12px; color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: .18em; }
-    h1 { margin: 0; color: var(--navy); font-size: clamp(30px, 7vw, 44px); line-height: 1.3; letter-spacing: .03em; }
-    .lead { margin: 13px 0 34px; color: var(--muted); font-size: 15px; line-height: 1.9; }
-    .links { display: grid; gap: 14px; }
-    .link {
-      display: flex; align-items: center; gap: 17px;
-      width: 100%; min-height: 90px; padding: 18px 19px;
-      color: inherit; text-decoration: none;
-      background: #fff; border: 1px solid var(--border); border-radius: 17px;
-      box-shadow: 0 6px 24px rgba(20, 46, 77, .045);
-      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+
+    a {
+      color: inherit;
     }
-    .link:hover { transform: translateY(-2px); border-color: #a9c4f9; box-shadow: 0 12px 28px rgba(20, 46, 77, .11); }
-    .link:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
-    .number {
-      display: grid; flex: 0 0 43px; width: 43px; height: 43px; place-items: center;
-      border-radius: 12px; background: var(--light-blue); color: var(--blue);
-      font-weight: 800; font-size: 15px;
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #4bbd99;
+      outline-offset: 4px;
+      border-radius: 8px;
     }
-    .content { min-width: 0; flex: 1; }
-    .name { display: block; margin-bottom: 4px; color: var(--navy); font-weight: 800; font-size: 17px; }
-    .description { display: block; color: var(--muted); font-size: 13px; line-height: 1.5; }
-    .arrow { margin-left: auto; color: var(--blue); font-size: 25px; line-height: 1; aria-hidden: true; }
-    footer { margin-top: 34px; color: #718096; text-align: center; font-size: 12px; }
-    @media (max-width: 480px) {
-      .wrap { padding: 52px 16px 36px; }
-      .lead { margin-bottom: 28px; }
-      .link { min-height: 88px; padding: 15px; gap: 13px; }
-      .number { flex-basis: 39px; width: 39px; height: 39px; }
-      .name { font-size: 16px; }
+
+    [hidden] {
+      display: none !important;
     }
-    @media (prefers-reduced-motion: reduce) { .link { transition: none; } }
+
+    .container {
+      width: min(1080px, calc(100% - 48px));
+      margin: auto;
+    }
+
+    /* ヘッダー */
+
+    .site-header {
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 80px;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 35px;
+      height: 35px;
+      border-radius: 12px;
+      background: var(--green);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .header-nav a {
+      text-decoration: none;
+      color: #40594c;
+    }
+
+    .header-nav a:hover {
+      color: var(--green-dark);
+    }
+
+    .header-nav .header-cta {
+      padding: 10px 17px;
+      border-radius: 20px;
+      background: var(--mint);
+      color: var(--green-dark);
+    }
+
+    /* トップページ */
+
+    .hero {
+      padding: 85px 0 63px;
+      background:
+        radial-gradient(
+          circle at 86% 20%,
+          #e1f7e9 0,
+          transparent 34%
+        ),
+        linear-gradient(
+          160deg,
+          #f5fbf4,
+          #fbfcf8 65%
+        );
+      border-bottom: 1px solid #e5efe5;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 22px;
+      color: #168d60;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .18em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 26px;
+      height: 2px;
+      background: var(--green);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(33px, 4.9vw, 57px);
+      line-height: 1.38;
+      letter-spacing: -.055em;
+      font-weight: 900;
+    }
+
+    h1 .accent {
+      color: var(--green-dark);
+    }
+
+    .hero-desc {
+      margin: 27px 0 30px;
+      font-size: 16px;
+      line-height: 2.05;
+      color: #526858;
+      max-width: 580px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 17px 25px;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      border-radius: 14px;
+      background: var(--green);
+      color: #fff;
+      box-shadow: 0 12px 25px rgba(20,165,114,.16);
+      transition:
+        transform .16s ease,
+        background .16s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: var(--green-dark);
+    }
+
+    .btn .btn-arrow {
+      font-size: 18px;
+    }
+
+    .hero-note {
+      display: block;
+      margin-top: 18px;
+      font-size: 12px;
+      color: #718478;
+    }
+
+    /* PC用の案内カード */
+
+    .hero-card {
+      background: #fff;
+      border: 1px solid #deeadf;
+      box-shadow: var(--shadow);
+      padding: 37px 34px;
+      border-radius: 29px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: -61px;
+      top: -71px;
+      width: 180px;
+      height: 180px;
+      background: #e9f9ef;
+      border-radius: 50%;
+    }
+
+    .preview-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e5eee5;
+      padding-bottom: 20px;
+    }
+
+    .preview-title {
+      font-weight: 900;
+      font-size: 16px;
+    }
+
+    .preview-tag {
+      font-size: 10px;
+      letter-spacing: .14em;
+      font-weight: 800;
+      color: #159267;
+      background: #e8f8f0;
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+
+    .preview-illus {
+      display: grid;
+      place-items: center;
+      margin: 24px auto 22px;
+      width: 98px;
+      height: 98px;
+      background: #ebf8ee;
+      border-radius: 31px;
+      position: relative;
+    }
+
+    .bubble {
+      position: relative;
+      background: #1aaa78;
+      border-radius: 20px;
+      width: 63px;
+      height: 49px;
+    }
+
+    .bubble::after {
+      content: "";
+      position: absolute;
+      right: 7px;
+      bottom: -10px;
+      width: 22px;
+      height: 18px;
+      background: #1aaa78;
+      clip-path: polygon(0 0, 100% 0, 80% 100%);
+    }
+
+    .bubble-lines {
+      position: absolute;
+      z-index: 1;
+      top: 17px;
+      left: 14px;
+      width: 35px;
+      height: 5px;
+      border-radius: 5px;
+      background: #fff;
+      box-shadow: 0 11px 0 #fff;
+    }
+
+    .preview-line {
+      height: 9px;
+      border-radius: 9px;
+      background: #eaf0e9;
+      margin-top: 12px;
+    }
+
+    .preview-line.short {
+      width: 67%;
+    }
+
+    .preview-small {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      margin-top: 25px;
+      color: #5f7966;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tiny-check {
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #e1f7eb;
+      width: 22px;
+      height: 22px;
+      color: #16855b;
+    }
+
+    /* ご案内 */
+
+    .section {
+      padding: 84px 0;
+    }
+
+    .section-heading {
+      margin-bottom: 33px;
+    }
+
+    .section-kicker {
+      color: var(--green-dark);
+      font-size: 12px;
+      letter-spacing: .18em;
+      font-weight: 900;
+      margin: 0 0 12px;
+    }
+
+    h2 {
+      font-size: clamp(25px, 3.5vw, 36px);
+      letter-spacing: -.035em;
+      line-height: 1.45;
+      margin: 0 0 12px;
+    }
+
+    .section-subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.95;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 29px;
+      background: #fff;
+      box-shadow: 0 5px 25px rgba(33,56,39,.025);
+    }
+
+    .info-num {
+      display: inline-grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      background: #e7f8ee;
+      color: #14885f;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .05em;
+      margin-bottom: 22px;
+    }
+
+    .info-card h3 {
+      font-size: 18px;
+      margin: 0 0 12px;
+    }
+
+    .info-card p {
+      font-size: 14px;
+      line-height: 2;
+      color: #617669;
+      margin: 0;
+    }
+
+    /* よくあるご質問 */
+
+    .qa-zone {
+      padding: 81px 0 95px;
+      background: #f3f8f2;
+      border-top: 1px solid #e4ece3;
+    }
+
+    .qa-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .qa-intro p {
+      font-size: 14px;
+      line-height: 2;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+
+    .qa-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-height: 119px;
+      padding: 27px 25px 27px 27px;
+      border: 1px solid #d9e6d9;
+      border-radius: 19px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(40,72,42,.035);
+      text-decoration: none;
+      transition:
+        transform .16s ease,
+        box-shadow .16s ease;
+    }
+
+    .qa-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 13px 28px rgba(40,72,42,.1);
+    }
+
+    .q-icon {
+      flex: none;
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      background: #e6f8ee;
+      border-radius: 13px;
+      color: #149c68;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .q-copy {
+      flex: 1;
+    }
+
+    .q-label {
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: #1c9b6e;
+      font-weight: 900;
+      display: block;
+      margin-bottom: 9px;
+    }
+
+    .q-copy strong {
+      font-size: 15px;
+      line-height: 1.6;
+      display: block;
+    }
+
+    .q-sub {
+      font-size: 12px;
+      color: #8a9b8e;
+      display: block;
+      margin-top: 7px;
+    }
+
+    .q-arrow {
+      width: 38px;
+      height: 38px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      border: 1px solid #e2ebe2;
+      border-radius: 50%;
+      font-size: 21px;
+      color: #2e916c;
+    }
+
+    /* 回答ページ */
+
+    .detail {
+      padding: 61px 0 96px;
+      min-height: calc(100vh - 162px);
+    }
+
+    .breadcrumb {
+      color: #7a8c7e;
+      font-size: 12px;
+      margin-bottom: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .breadcrumb a {
+      text-decoration: none;
+      color: #248763;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .detail-head {
+      max-width: 840px;
+      margin: 0 auto 35px;
+    }
+
+    .detail-head .section-kicker {
+      margin-bottom: 14px;
+    }
+
+    .detail-head h1 {
+      font-size: clamp(28px, 3.5vw, 43px);
+      line-height: 1.53;
+      letter-spacing: -.035em;
+    }
+
+    .detail-lead {
+      margin: 15px 0 0;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #708477;
+    }
+
+    .answer-sheet {
+      background: #fff;
+      border: 1px solid #deeadf;
+      border-radius: 23px;
+      max-width: 840px;
+      margin: auto;
+      box-shadow: var(--shadow);
+      padding: 41px 46px;
+    }
+
+    .answer-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #14875b;
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: .09em;
+      margin-bottom: 21px;
+    }
+
+    .answer-dot {
+      width: 31px;
+      height: 31px;
+      border-radius: 10px;
+      background: #e6f9ef;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+
+    .answer-summary {
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1.88;
+      color: #18392c;
+      margin: 0 0 22px;
+    }
+
+    .answer-text {
+      font-size: 15px;
+      line-height: 2.05;
+      color: #51695a;
+      margin: 0 0 20px;
+    }
+
+    .notice {
+      border-left: 3px solid #21b17c;
+      padding: 16px 20px;
+      background: #f0fbf5;
+      border-radius: 0 12px 12px 0;
+      margin: 28px 0;
+      font-size: 14px;
+      line-height: 1.9;
+      color: #476251;
+    }
+
+    .answer-sheet h3 {
+      font-size: 17px;
+      margin: 33px 0 15px;
+    }
+
+    .steps {
+      padding-left: 22px;
+      margin: 0;
+      color: #4b6453;
+      font-size: 14px;
+      line-height: 2.05;
+    }
+
+    .steps li {
+      padding: 3px 0 7px;
+    }
+
+    .official {
+      font-size: 12px;
+      color: #678173;
+      line-height: 1.8;
+      margin: 25px 0 0;
+      padding-top: 20px;
+      border-top: 1px solid #e5eee7;
+    }
+
+    .official a {
+      color: #108359;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .detail-end {
+      max-width: 840px;
+      margin: 29px auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .back-link {
+      color: #147d57;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .personal-note {
+      font-size: 12px;
+      color: #8a9c90;
+      max-width: 500px;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    /* フッター */
+
+    footer {
+      background: #17392c;
+      color: #bed2c3;
+      padding: 35px 0;
+      text-align: center;
+      font-size: 12px;
+      line-height: 2;
+    }
+
+    footer strong {
+      display: block;
+      color: white;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    /* タブレット対応 */
+
+    @media (max-width: 800px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+
+      .hero-card {
+        display: none;
+      }
+
+      .qa-layout {
+        grid-template-columns: 1fr;
+        gap: 17px;
+      }
+
+      .container {
+        width: min(100% - 38px, 670px);
+      }
+
+      .hero {
+        padding: 64px 0;
+      }
+
+      .section {
+        padding: 67px 0;
+      }
+
+      .qa-zone {
+        padding: 68px 0 82px;
+      }
+    }
+
+    /* スマートフォン対応 */
+
+    @media (max-width: 560px) {
+      .container {
+        width: calc(100% - 36px);
+      }
+
+      .header-inner {
+        min-height: 66px;
+        gap: 12px;
+      }
+
+      .brand {
+        gap: 8px;
+        font-size: 12px;
+      }
+
+      .brand-mark {
+        width: 29px;
+        height: 29px;
+        font-size: 12px;
+        border-radius: 9px;
+      }
+
+      .header-nav {
+        gap: 12px;
+        font-size: 11px;
+      }
+
+      .header-nav .header-cta {
+        padding: 8px 11px;
+      }
+
+      .header-nav .hide-mobile {
+        display: none;
+      }
+
+      .hero {
+        padding: 67px 0 61px;
+      }
+
+      .eyebrow {
+        margin-bottom: 17px;
+        font-size: 10px;
+      }
+
+      h1 {
+        font-size: 37px;
+        line-height: 1.42;
+      }
+
+      .hero-desc {
+        font-size: 14px;
+        line-height: 2;
+        margin: 22px 0 26px;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 16px;
+      }
+
+      .hero-note {
+        font-size: 11px;
+      }
+
+      .section {
+        padding: 61px 0;
+      }
+
+      .section-heading {
+        margin-bottom: 25px;
+      }
+
+      h2 {
+        font-size: 27px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .info-card {
+        padding: 23px;
+      }
+
+      .info-num {
+        margin-bottom: 15px;
+      }
+
+      .info-card h3 {
+        font-size: 17px;
+      }
+
+      .qa-zone {
+        padding: 60px 0 79px;
+      }
+
+      .qa-intro p {
+        margin: 11px 0 10px;
+      }
+
+      .qa-card {
+        gap: 13px;
+        padding: 18px 15px;
+        min-height: 105px;
+      }
+
+      .q-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 17px;
+      }
+
+      .q-copy strong {
+        font-size: 14px;
+      }
+
+      .q-arrow {
+        width: 30px;
+        height: 30px;
+        font-size: 17px;
+      }
+
+      .detail {
+        padding: 34px 0 70px;
+      }
+
+      .breadcrumb {
+        margin-bottom: 35px;
+        font-size: 11px;
+      }
+
+      .detail-head h1 {
+        font-size: 28px;
+      }
+
+      .detail-head {
+        margin-bottom: 25px;
+      }
+
+      .answer-sheet {
+        padding: 26px 20px;
+        border-radius: 17px;
+      }
+
+      .answer-summary {
+        font-size: 17px;
+        line-height: 1.83;
+      }
+
+      .answer-text {
+        font-size: 14px;
+      }
+
+      .notice {
+        padding: 14px;
+      }
+
+      .detail-end {
+        display: block;
+      }
+
+      .personal-note {
+        text-align: left;
+        margin-top: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .btn,
+      .qa-card {
+        transition: none;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <main class="wrap">
-    <!-- ここの見出しと説明文を書き換えてください -->
-    <p class="eyebrow">QUICK LINKS</p>
-    <h1>リンク一覧</h1>
-    <p class="lead">見たい項目を選ぶと、目的のページに移動できます。</p>
 
-    <nav class="links" aria-label="リンク一覧">
-      <!-- 編集方法：href="..." を実際のURLに変更し、項目名と説明も書き換えます。 -->
-      <!-- ↓↓↓ サンプルURLの https://example.com は公開前に必ず変更してください ↓↓↓ -->
-      <a class="link" href="https://example.com">
-        <span class="number" aria-hidden="true">01</span>
-        <span class="content"><span class="name">公式サイト</span><span class="description">詳しい情報はこちら</span></span>
-        <span class="arrow" aria-hidden="true">›</span>
+  <!-- 共通ヘッダー -->
+
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a
+        class="brand"
+        href="#home"
+        aria-label="中井晴太 LINE専用ページのトップへ"
+      >
+        <span class="brand-mark" aria-hidden="true">N</span>
+        <span>中井晴太 LINE専用ページ</span>
       </a>
 
-      <a class="link" href="https://example.com">
-        <span class="number" aria-hidden="true">02</span>
-        <span class="content"><span class="name">イベント・お知らせ</span><span class="description">最新情報を確認できます</span></span>
-        <span class="arrow" aria-hidden="true">›</span>
-      </a>
+      <nav class="header-nav" aria-label="ページ内メニュー">
+        <a class="hide-mobile" href="#guide">
+          ご案内
+        </a>
 
-      <a class="link" href="https://example.com">
-        <span class="number" aria-hidden="true">03</span>
-        <span class="content"><span class="name">Instagram</span><span class="description">写真や最新の投稿はこちら</span></span>
-        <span class="arrow" aria-hidden="true">›</span>
-      </a>
+        <a class="header-cta" href="#faq">
+          よくあるご質問 ↗
+        </a>
+      </nav>
 
-      <a class="link" href="https://example.com">
-        <span class="number" aria-hidden="true">04</span>
-        <span class="content"><span class="name">お問い合わせ</span><span class="description">ご質問・ご連絡はこちら</span></span>
-        <span class="arrow" aria-hidden="true">›</span>
-      </a>
-    </nav>
-    <footer>タップするだけで各ページに移動できます。</footer>
+    </div>
+  </header>
+
+
+  <!-- トップページ -->
+
+  <main id="home-page">
+
+    <!-- メインビジュアル -->
+
+    <section class="hero" id="home">
+      <div class="container hero-inner">
+
+        <div>
+          <p class="eyebrow">
+            NAKAI HARUTA / LINE INFORMATION
+          </p>
+
+          <h1>
+            中井晴太<br>
+            <span class="accent">LINE専用ページ</span>
+          </h1>
+
+          <p class="hero-desc">
+            こちらは、LINEからアクセスいただいた方に向けた
+            案内ページです。お知らせやご利用に関する情報、
+            よくあるご質問などをこちらにまとめています。
+          </p>
+
+          <a class="btn" href="#faq">
+            よくあるご質問を見る
+            <span class="btn-arrow" aria-hidden="true">↗</span>
+          </a>
+
+          <span class="hero-note">
+            気になる項目をタップすると、
+            詳しい内容をご確認いただけます。
+          </span>
+        </div>
+
+        <!-- PC表示用の装飾カード -->
+
+        <aside class="hero-card" aria-label="案内ページのイメージ">
+
+          <div class="preview-top">
+            <span class="preview-title">ご案内</span>
+            <span class="preview-tag">INFORMATION</span>
+          </div>
+
+          <div class="preview-illus" aria-hidden="true">
+            <div class="bubble">
+              <span class="bubble-lines"></span>
+            </div>
+          </div>
+
+          <div class="preview-line"></div>
+          <div class="preview-line short"></div>
+
+          <div class="preview-small">
+            <span class="tiny-check">✓</span>
+            必要な情報を、わかりやすく。
+          </div>
+
+        </aside>
+
+      </div>
+    </section>
+
+
+    <!-- ご案内 -->
+
+    <section class="section" id="guide">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <p class="section-kicker">
+            INFORMATION
+          </p>
+
+          <h2>このページについて</h2>
+
+          <p class="section-subtitle">
+            お知らせとご利用方法を、
+            ひとつのページからご確認いただけます。
+          </p>
+
+        </div>
+
+        <div class="cards">
+
+          <article class="info-card">
+            <span class="info-num">01</span>
+
+            <h3>お知らせ</h3>
+
+            <p>
+              こちらでは、LINEでご案内している内容や、
+              新しい情報を随時掲載していきます。
+              必要に応じてご確認ください。
+            </p>
+          </article>
+
+          <article class="info-card">
+            <span class="info-num">02</span>
+
+            <h3>ご利用について</h3>
+
+            <p>
+              ご不明な点がある場合は、
+              まず下部の「よくあるご質問」をご覧ください。
+              各項目をタップすると、
+              詳しい回答を確認できます。
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- よくあるご質問 -->
+
+    <section class="qa-zone" id="faq">
+      <div class="container qa-layout">
+
+        <div class="qa-intro">
+
+          <p class="section-kicker">FAQ</p>
+
+          <h2>
+            よくある<br>
+            ご質問
+          </h2>
+
+          <p>
+            よくお問い合わせいただく内容をまとめました。
+            質問をクリックすると回答ページが開きます。
+          </p>
+
+        </div>
+
+        <!-- 質問カード -->
+
+        <div>
+
+          <a
+            class="qa-card"
+            href="#faq-youtube"
+            id="youtube-question"
+          >
+
+            <span class="q-icon" aria-hidden="true">
+              Q
+            </span>
+
+            <span class="q-copy">
+
+              <span class="q-label">
+                Q.01 / 動画サービス
+              </span>
+
+              <strong>
+                YouTube Premiumに加入しているのに、
+                広告が表示されることがあるのはなぜですか？
+              </strong>
+
+              <span class="q-sub">
+                回答を読む
+              </span>
+
+            </span>
+
+            <span class="q-arrow" aria-hidden="true">
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
   </main>
+
+
+  <!-- Q&Aの回答ページ -->
+
+  <main id="detail-page" hidden>
+
+    <section class="detail">
+      <div class="container">
+
+        <!-- パンくずリスト -->
+
+        <nav class="breadcrumb" aria-label="現在のページ">
+
+          <a href="#home">トップ</a>
+
+          <span>›</span>
+
+          <a href="#faq">
+            よくあるご質問
+          </a>
+
+          <span>›</span>
+
+          <span>Q.01</span>
+
+        </nav>
+
+
+        <!-- 質問タイトル -->
+
+        <div class="detail-head">
+
+          <p class="section-kicker">
+            FAQ / Q.01
+          </p>
+
+          <h1>
+            YouTube Premiumに加入しているのに、
+            広告が表示されることがあるのはなぜですか？
+          </h1>
+
+          <p class="detail-lead">
+            YouTube Premiumで表示される広告や
+            プロモーションについてご案内します。
+          </p>
+
+        </div>
+
+
+        <!-- 回答本文 -->
+
+        <article class="answer-sheet">
+
+          <div class="answer-heading">
+
+            <span class="answer-dot" aria-hidden="true">
+              A
+            </span>
+
+            回答
+
+          </div>
+
+          <p class="answer-summary">
+            YouTube Premiumでも、
+            動画内のすべての宣伝・PRが
+            非表示になるわけではありません。
+          </p>
+
+          <p class="answer-text">
+            YouTube Premiumに加入すると、
+            通常の動画再生前や再生途中に
+            YouTubeが配信する広告は、
+            基本的に表示されなくなります。
+          </p>
+
+          <p class="answer-text">
+            一方、動画の投稿者が内容に直接組み込んだ
+            スポンサー紹介や商品PR、
+            動画周辺の一部のプロモーションなどは、
+            Premiumでも表示される場合があります。
+          </p>
+
+          <!-- 補足説明 -->
+
+          <div class="notice">
+
+            <strong>ポイント：</strong>
+
+            動画そのものに含まれるPRは、
+            通常の広告とは扱いが異なります。
+
+            「Premiumでも広告が見える」と感じる場合は、
+            まず広告の種類をご確認ください。
+
+          </div>
+
+
+          <!-- 確認手順 -->
+
+          <h3>
+            通常の広告が表示されるときは
+          </h3>
+
+          <ol class="steps">
+
+            <li>
+              YouTube Premiumに登録した
+              Googleアカウントでログインしているか
+              確認する。
+            </li>
+
+            <li>
+              メンバーシップの有効期限と
+              契約状況を確認する。
+            </li>
+
+            <li>
+              解消しない場合は、
+              YouTube公式ヘルプをご確認ください。
+            </li>
+
+          </ol>
+
+
+          <!-- 参考リンク -->
+
+          <p class="official">
+
+            参考：
+
+            <a
+              href="https://support.google.com/youtube/answer/7437519?co=GENIE.Platform%3DAndroid&amp;hl=ja"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              YouTube公式ヘルプ
+              「YouTube 動画に広告が表示される」 ↗
+            </a>
+
+          </p>
+
+        </article>
+
+
+        <!-- 戻るボタン -->
+
+        <div class="detail-end">
+
+          <a class="back-link" href="#faq">
+            ← よくあるご質問に戻る
+          </a>
+
+          <span class="personal-note">
+            本ページは個人作成の案内ページです。
+            LINE・YouTubeの公式サポートではありません。
+          </span>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- 共通フッター -->
+
+  <footer>
+    <div class="container">
+
+      <strong>
+        中井晴太 LINE専用ページ
+      </strong>
+
+      © 2026 NAKAI HARUTA.
+
+      <br>
+
+      ※ 個人作成の案内ページです。
+      LINE・YouTubeの公式サイトではありません。
+
+    </div>
+  </footer>
+
+
+  <!-- ページ切り替え機能 -->
+
+  <script>
+    (function () {
+
+      const home = document.getElementById("home-page");
+
+      const detail = document.getElementById("detail-page");
+
+
+      function updatePage() {
+
+        // URLの末尾から表示先を判定する
+
+        const route = location.hash.slice(1);
+
+        const isDetail = route === "faq-youtube";
+
+
+        // トップページと回答ページを切り替える
+
+        home.hidden = isDetail;
+
+        detail.hidden = !isDetail;
+
+
+        // ブラウザのタイトルを変更する
+
+        document.title = isDetail
+          ? "YouTube Premiumと広告について | 中井晴太 LINE専用ページ"
+          : "中井晴太 LINE専用ページ";
+
+
+        // 回答ページでは先頭までスクロールする
+
+        if (isDetail) {
+
+          window.scrollTo(0, 0);
+
+        } else if (
+          route === "faq" ||
+          route === "guide"
+        ) {
+
+          // 対応するセクションへ移動する
+
+          requestAnimationFrame(() => {
+
+            document
+              .getElementById(route)
+              ?.scrollIntoView({
+                block: "start",
+                behavior: "instant"
+              });
+
+          });
+
+        } else if (route === "home") {
+
+          window.scrollTo(0, 0);
+
+        }
+
+      }
+
+
+      // URLの末尾が変わったらページを切り替える
+
+      addEventListener("hashchange", updatePage);
+
+
+      // 最初にページを読み込んだときにも実行する
+
+      addEventListener("DOMContentLoaded", updatePage);
+
+      updatePage();
+
+    })();
+  </script>
+
 </body>
 </html>
