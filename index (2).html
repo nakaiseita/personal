@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173c2e">
+  <meta name="description" content="中井晴太 LINE専用ページ。お知らせ、ご利用案内、よくあるご質問を掲載しています。">
+  <title>中井晴太 LINE専用ページ</title>
+  <style>
+    :root {
+      --green: #15966b;
+      --green-deep: #0c7957;
+      --dark: #173c2e;
+      --pale: #edf8f0;
+      --bg: #f8faf7;
+      --text: #263b30;
+      --muted: #687a6e;
+      --line: #dce9df;
+      --shadow: 0 12px 32px rgba(25, 66, 39, .07);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      line-height: 1.8;
+    }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible { outline: 3px solid #32b58a; outline-offset: 4px; }
+    [hidden] { display: none !important; }
+    .container { width: min(980px, calc(100% - 40px)); margin: 0 auto; }
+    .svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+    .icon { display: block; width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .icon-small { width: 19px; height: 19px; }
+    .icon-large { width: 36px; height: 36px; }
+
+    /* ヘッダーと三本線メニュー */
+    .header { background: rgba(255,255,255,.96); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px); }
+    .header-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { text-decoration: none; font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    .brand-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: var(--green); color: white; font-size: 19px; font-weight: 800; }
+    .menu-wrap { position: relative; }
+    .menu-button { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: white; display: grid; place-content: center; gap: 5px; cursor: pointer; }
+    .menu-button span { display: block; width: 21px; height: 2px; border-radius: 2px; background: var(--dark); transition: transform .2s ease, opacity .2s ease; }
+    .menu-button[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-button[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .menu-button[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .menu-panel { position: absolute; top: 53px; right: 0; width: 245px; background: #fff; padding: 10px; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 18px 40px rgba(0,0,0,.12); }
+    .menu-panel a { display: flex; align-items: center; gap: 11px; padding: 11px 13px; border-radius: 9px; font-size: 14px; text-decoration: none; font-weight: 700; }
+    .menu-panel a .icon { width: 18px; height: 18px; color: var(--green); }
+    .menu-panel a:hover { background: var(--pale); color: var(--green-deep); }
+    .menu-panel .menu-note { margin: 9px 12px 3px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+
+    /* 共通 */
+    .page { min-height: calc(100vh - 220px); }
+    .eyebrow { margin: 0 0 10px; color: var(--green); font-size: 11px; font-weight: 900; letter-spacing: .16em; }
+    .lead { color: var(--muted); margin: 12px 0 0; }
+    .card { display: block; background: #fff; border: 1px solid var(--line); border-radius: 19px; box-shadow: var(--shadow); padding: 26px; }
+    a.card { text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
+    a.card:hover { transform: translateY(-3px); box-shadow: 0 16px 38px rgba(25,66,39,.12); }
+    .arrow { color: var(--green); font-size: 23px; font-weight: 800; }
+    .pill { display: inline-block; background: var(--pale); color: var(--green-deep); font-size: 11px; font-weight: 800; border-radius: 30px; padding: 4px 11px; }
+    .icon-tile { display: grid; place-items: center; flex: none; width: 58px; height: 58px; border-radius: 17px; color: var(--green-deep); background: linear-gradient(145deg, #e6f8ed, #f2fbf5); border: 1px solid #d6eee0; }
+    .back { display: inline-flex; align-items: center; gap: 6px; margin-top: 27px; color: var(--green-deep); text-decoration: none; font-size: 14px; font-weight: 800; }
+    .back:hover { text-decoration: underline; }
+    .page-inner { padding: 62px 0 88px; max-width: 800px; margin: 0 auto; }
+    .page-heading { font-size: clamp(27px, 4vw, 39px); line-height: 1.45; margin: 0; letter-spacing: -.03em; }
+    .page-lead { margin: 13px 0 34px; color: var(--muted); }
+    .page-intro { display: flex; align-items: center; gap: 20px; margin-bottom: 28px; }
+    .page-intro .icon-tile { width: 80px; height: 80px; border-radius: 24px; }
+    .page-intro .icon { width: 42px; height: 42px; }
+    .page-intro .page-lead { margin: 9px 0 0; }
+    .article h2 { margin: 0 0 12px; font-size: 22px; }
+    .article h3 { margin: 30px 0 8px; font-size: 17px; }
+    .article p { margin: 0 0 19px; color: #4b6153; }
+    .article ol { padding-left: 23px; color: #4b6153; }
+    .article li { margin-bottom: 10px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: 12px; background: var(--green); color: white; padding: 12px 20px; font-weight: 800; font-size: 14px; text-decoration: none; }
+    .button:hover { background: var(--green-deep); }
+
+    /* トップページのメインイラスト */
+    .hero { overflow: hidden; padding: 70px 0 66px; background: radial-gradient(circle at 85% 40%, #d7f3e3, transparent 36%), linear-gradient(140deg, #edf8ef, #f9fbf8 74%); border-bottom: 1px solid var(--line); }
+    .hero-inner { display: grid; grid-template-columns: 1.12fr .88fr; align-items: center; gap: 42px; }
+    .hero h1 { font-size: clamp(34px, 4.7vw, 54px); margin: 0; line-height: 1.45; letter-spacing: -.045em; }
+    .hero h1 span { color: var(--green-deep); }
+    .hero-copy { max-width: 565px; font-size: 15px; color: #5b7161; margin: 24px 0 0; }
+    .hero-art { position: relative; height: 330px; display: grid; place-items: center; isolation: isolate; }
+    .art-halo { position: absolute; width: 308px; height: 308px; border-radius: 50%; background: linear-gradient(135deg,#caebd9,#eaf9ef); box-shadow: inset 0 0 0 1px #b9e0ca; z-index: -1; }
+    .art-halo::after { content: ""; position: absolute; width: 348px; height: 348px; border: 1px dashed #9dceb0; border-radius: 50%; top: -20px; left: -20px; opacity: .75; }
+    .art-phone { width: 210px; height: 295px; border-radius: 28px; background: white; border: 6px solid #20553d; box-shadow: 20px 27px 55px rgba(18,91,51,.18); transform: rotate(-7deg); padding: 11px 12px; position: relative; }
+    .phone-top { height: 39px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e6efe8; padding-bottom: 9px; }
+    .phone-avatar { display: grid; place-items: center; width: 30px; height: 30px; background: #e2f7ea; color: var(--green-deep); border-radius: 50%; }
+    .phone-lines { flex: 1; }
+    .phone-lines i { display: block; width: 75%; height: 6px; border-radius: 6px; background: #bfdcc8; margin: 4px 0; }
+    .phone-lines i + i { width: 47%; height: 4px; background: #e1ece2; }
+    .chat-bubble { height: 50px; margin-top: 17px; background: #f1f6f1; border-radius: 12px 12px 12px 3px; padding: 11px; }
+    .chat-bubble i { display: block; width: 82%; height: 5px; border-radius: 5px; background: #c3d8c6; margin-bottom: 8px; }
+    .chat-bubble i + i { width: 53%; }
+    .chat-bubble.out { width: 79%; margin-left: auto; background: #d0f2da; border-radius: 12px 12px 3px 12px; }
+    .chat-bubble.out i { background: #78b991; }
+    .chat-bubble.out i + i { width: 65%; }
+    .phone-check { position: absolute; right: 9px; bottom: 13px; display: grid; place-items: center; width: 43px; height: 43px; border-radius: 14px; background: var(--green); color: #fff; }
+    .art-float { position: absolute; display: grid; place-items: center; background: #fff; border: 1px solid #daebde; box-shadow: 0 12px 30px rgba(34,90,47,.12); color: var(--green-deep); border-radius: 18px; }
+    .art-float.chat { width: 64px; height: 64px; top: 26px; left: 13px; transform: rotate(11deg); }
+    .art-float.spark { width: 52px; height: 52px; right: 7px; bottom: 25px; transform: rotate(13deg); }
+    .art-small-circle { position: absolute; width: 16px; height: 16px; border: 3px solid #70bd90; border-radius: 50%; top: 26px; right: 49px; }
+
+    /* ご案内・FAQへのカード */
+    .home-section { padding: 67px 0; scroll-margin-top: 92px; }
+    .section-title { font-size: 29px; margin: 0 0 6px; }
+    .section-desc { color: var(--muted); margin: 0 0 26px; font-size: 14px; }
+    .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 19px; }
+    .info-card { display: flex !important; flex-direction: column; min-height: 226px; }
+    .info-card .card-top { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+    .info-card h3 { margin: 15px 0 7px; font-size: 20px; }
+    .info-card p { color: var(--muted); margin: 0; font-size: 14px; }
+    .faq-home { background: #f0f7f1; padding: 55px 0 75px; }
+    .faq-link { display: flex !important; align-items: center; gap: 22px; }
+    .faq-link .faq-text { flex: 1; }
+    .faq-link h2 { font-size: 24px; margin: 9px 0 5px; }
+    .faq-link p { margin: 0; font-size: 14px; color: var(--muted); }
+
+    /* FAQ一覧・質問フォーム・回答 */
+    .faq-item { display: flex !important; gap: 16px; align-items: center; margin-bottom: 22px; }
+    .faq-item-main { flex: 1; }
+    .faq-item-main strong { display: block; line-height: 1.6; font-size: 16px; }
+    .faq-item-main small { color: var(--muted); }
+    .form-cta { display: flex; align-items: flex-start; gap: 17px; background: #eaf7ef; border: 1px solid #cce5d5; border-radius: 18px; padding: 24px; margin-top: 40px; }
+    .form-cta .icon-tile { background: #fff; }
+    .form-cta-body { flex: 1; }
+    .form-cta h2 { font-size: 19px; margin: 0 0 7px; }
+    .form-cta p { color: #587464; margin: 0 0 17px; font-size: 14px; }
+    .answer-label { color: #098258; font-size: 13px; font-weight: 900; }
+    .answer-main { font-size: 19px; line-height: 1.85; font-weight: 800; color: var(--dark) !important; }
+    .note { margin: 22px 0; background: var(--pale); border-left: 4px solid var(--green); border-radius: 0 11px 11px 0; padding: 17px 20px; color: #43624e; font-size: 14px; }
+    .official-link { color: var(--green-deep); overflow-wrap: anywhere; }
+
+    /* ページ最下部の広告案内・準備中 */
+    .bottom-ad { border-top: 1px solid var(--line); background: #fff; padding: 30px 0; }
+    .bottom-ad a { display: flex; align-items: center; gap: 16px; text-decoration: none; padding: 21px 23px; background: var(--pale); border-radius: 15px; font-weight: 800; }
+    .bottom-ad .ad-label { flex: 1; }
+    .bottom-ad small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 4px; }
+    .preparing { text-align: center; padding: 53px 18px; }
+    .preparing .symbol { display: grid; place-items: center; width: 93px; height: 93px; margin: 0 auto 22px; border-radius: 27px; background: var(--pale); color: var(--green-deep); border: 1px solid #d6eee0; }
+    .preparing .symbol .icon { width: 51px; height: 51px; stroke-width: 1.6; }
+    footer { padding: 29px 0; background: var(--dark); color: #d2e3d8; font-size: 12px; text-align: center; }
+    footer strong { color: #fff; display: block; font-size: 13px; }
+    footer p { margin: 7px 0 0; }
+
+    @media (max-width: 790px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 27px; }
+      .hero-art { height: 275px; }
+      .art-halo { width: 256px; height: 256px; }
+      .art-halo::after { width: 286px; height: 286px; top: -15px; left: -15px; }
+      .art-phone { transform: rotate(-6deg) scale(.83); }
+      .art-float.chat { left: calc(50% - 148px); }
+      .art-float.spark { right: calc(50% - 140px); }
+      .art-small-circle { right: calc(50% - 122px); }
+    }
+    @media (max-width: 640px) {
+      .container { width: calc(100% - 32px); }
+      .header-inner { height: 65px; }
+      .brand { font-size: 13px; }
+      .hero { padding: 52px 0 47px; }
+      .hero h1 { font-size: 36px; }
+      .hero-copy { margin: 19px 0 0; }
+      .hero-art { height: 267px; }
+      .home-section { padding: 55px 0; }
+      .info-grid { grid-template-columns: 1fr; gap: 14px; }
+      .info-card { min-height: 0; }
+      .card { padding: 21px; }
+      .faq-link { gap: 14px; }
+      .faq-link .icon-tile { width: 47px; height: 47px; border-radius: 14px; }
+      .faq-link .icon { width: 28px; height: 28px; }
+      .faq-link h2 { font-size: 21px; }
+      .page-inner { padding: 42px 0 68px; }
+      .page-heading { font-size: 28px; }
+      .page-intro { gap: 13px; }
+      .page-intro .icon-tile { width: 61px; height: 61px; border-radius: 18px; }
+      .page-intro .icon { width: 32px; height: 32px; }
+      .faq-item { gap: 12px; }
+      .faq-item .icon-tile { width: 40px; height: 40px; border-radius: 12px; }
+      .faq-item .icon { width: 23px; height: 23px; }
+      .form-cta { padding: 19px; gap: 12px; }
+      .form-cta .icon-tile { width: 42px; height: 42px; border-radius: 12px; }
+      .answer-main { font-size: 17px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .menu-button span, a.card { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 絵文字ではなくSVGで描くため、端末が違ってもイラストの色が統一されます -->
+  <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-8h6v8"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h3M14 15h2M8 18h8"/></symbol>
+    <symbol id="i-guide" viewBox="0 0 24 24"><path d="M12 6c-2.8-1.9-6-2.2-10-1v15c4-1.2 7.2-.9 10 1 2.8-1.9 6-2.2 10-1V5c-4-1.2-7.2-.9-10 1z"/><path d="M12 6v15M5 9c1.5-.3 2.8-.3 4 .2M15 9.2c1.2-.5 2.5-.5 4-.2"/></symbol>
+    <symbol id="i-faq" viewBox="0 0 24 24"><path d="M20 11.2a8.3 8.3 0 0 1-8.5 8.2c-1.5 0-2.6-.2-3.6-.7L3 20l1.4-4.2A8.3 8.3 0 1 1 20 11.2z"/><path d="M9.4 9a2.9 2.9 0 0 1 5.6 1c0 1.9-3 2.1-3 4M12 16.6h.01"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/><path d="M17 2v3M14.5 3.5 17 5M19.5 3.5 17 5"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 1-8.4 8 9 9 0 0 1-3.7-.8L4 20l1.2-4A8 8 0 1 1 20 11z"/><path d="M8 11h8M8 14h5"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.6 7.4L22 12l-7.4 2.6L12 22l-2.6-7.4L2 12l7.4-2.6z"/></symbol>
+    <symbol id="i-ads" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 15h4M7 11h8M7 8h10M18 14l3 3M21 14l-3 3"/></symbol>
+    <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M8 3v4c0 2 2.7 3.6 4 5 1.3-1.4 4-3 4-5V3M8 21v-4c0-2 2.7-3.6 4-5 1.3 1.4 4 3 4 5v4"/><path d="m10 8 2 2 2-2M10 18h4"/></symbol>
+  </svg>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#home" class="brand" aria-label="トップページへ戻る"><span class="brand-icon" aria-hidden="true">N</span>中井晴太 LINE専用ページ</a>
+      <div class="menu-wrap" id="menu-wrap">
+        <button class="menu-button" id="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu-panel"><span></span><span></span><span></span></button>
+        <nav class="menu-panel" id="menu-panel" aria-label="メインメニュー" hidden>
+          <a href="#home"><svg class="icon"><use href="#i-home"/></svg>トップページ</a>
+          <a href="#guide"><svg class="icon"><use href="#i-guide"/></svg>ご案内</a>
+          <a href="#notice"><svg class="icon"><use href="#i-news"/></svg>お知らせ</a>
+          <a href="#usage"><svg class="icon"><use href="#i-guide"/></svg>ご利用について</a>
+          <a href="#faq"><svg class="icon"><use href="#i-faq"/></svg>よくあるご質問</a>
+          <p class="menu-note">項目を選択するとページを移動します。</p>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. トップページ -->
+  <main class="page" id="page-home">
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <p class="eyebrow">NAKAI SEITA / LINE INFORMATION</p>
+          <h1>中井晴太<br><span>LINE専用ページ</span></h1>
+          <p class="hero-copy">中井晴太とのLINEの使い方にお困りの方へのご案内をまとめています。お知らせやご利用方法については、下の項目からご確認ください。</p>
+        </div>
+        <!-- 緑色だけで構成したオリジナルのトーク画面イラスト -->
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-halo"></div>
+          <div class="art-small-circle"></div>
+          <div class="art-float chat"><svg class="icon icon-large"><use href="#i-chat"/></svg></div>
+          <div class="art-phone">
+            <div class="phone-top"><span class="phone-avatar"><svg class="icon icon-small"><use href="#i-chat"/></svg></span><span class="phone-lines"><i></i><i></i></span></div>
+            <div class="chat-bubble"><i></i><i></i></div>
+            <div class="chat-bubble out"><i></i><i></i></div>
+            <div class="chat-bubble"><i></i><i></i></div>
+            <span class="phone-check"><svg class="icon"><use href="#i-check"/></svg></span>
+          </div>
+          <div class="art-float spark"><svg class="icon"><use href="#i-spark"/></svg></div>
+        </div>
+      </div>
+    </section>
+    <section class="home-section" id="guide">
+      <div class="container">
+        <p class="eyebrow">INFORMATION</p><h2 class="section-title">ご案内</h2>
+        <p class="section-desc">気になる項目をクリックすると、詳しいページに移動します。</p>
+        <div class="info-grid">
+          <a class="card info-card" href="#notice">
+            <div class="card-top"><span class="icon-tile"><svg class="icon icon-large"><use href="#i-news"/></svg></span><span class="arrow" aria-hidden="true">↗</span></div>
+            <h3>お知らせ</h3><p>このページに関するお知らせや、今後の更新についてご案内します。</p>
+          </a>
+          <a class="card info-card" href="#usage">
+            <div class="card-top"><span class="icon-tile"><svg class="icon icon-large"><use href="#i-guide"/></svg></span><span class="arrow" aria-hidden="true">↗</span></div>
+            <h3>ご利用について</h3><p>各ページの使い方や、よくあるご質問の確認方法をご案内します。</p>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="faq-home">
+      <div class="container">
+        <a class="card faq-link" href="#faq">
+          <span class="icon-tile"><svg class="icon icon-large"><use href="#i-faq"/></svg></span>
+          <span class="faq-text"><span class="pill">FAQ</span><h2>よくあるご質問</h2><p>質問一覧と回答はこちらからご覧ください。</p></span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- 2. お知らせ -->
+  <main class="page" id="page-notice" hidden><div class="container"><div class="page-inner">
+    <div class="page-intro"><span class="icon-tile"><svg class="icon"><use href="#i-news"/></svg></span><div><p class="eyebrow">INFORMATION / NEWS</p><h1 class="page-heading">お知らせ</h1><p class="page-lead">中井晴太 LINE専用ページからのご案内です。</p></div></div>
+    <article class="card article"><h2>ご利用ありがとうございます</h2>
+      <p>このページでは、LINEでご案内した内容を確認しやすいように、必要な情報をまとめています。</p>
+      <p>新しいお知らせがある場合は、こちらに随時掲載します。ご不明な点がありましたら「よくあるご質問」もあわせてご覧ください。</p>
+      <p>掲載内容は必要に応じて更新する場合があります。</p>
+      <a href="#faq" class="button"><svg class="icon icon-small"><use href="#i-faq"/></svg>よくあるご質問へ →</a>
+    </article><a class="back" href="#home">← トップページに戻る</a>
+  </div></div></main>
+
+  <!-- 3. ご利用について -->
+  <main class="page" id="page-usage" hidden><div class="container"><div class="page-inner">
+    <div class="page-intro"><span class="icon-tile"><svg class="icon"><use href="#i-guide"/></svg></span><div><p class="eyebrow">INFORMATION / GUIDE</p><h1 class="page-heading">ご利用について</h1><p class="page-lead">ページの見方と、お問い合わせ方法をご案内します。</p></div></div>
+    <article class="card article"><h2>このページの使い方</h2>
+      <p>トップページから「お知らせ」や「よくあるご質問」を選ぶと、それぞれのページに移動できます。</p>
+      <h3>1. トップページから移動するには</h3><p>画面右上の三本線をタップすると、「トップページ」「ご案内」「お知らせ」「ご利用について」「よくあるご質問」が表示されます。どのページからでも移動できます。</p>
+      <h3>2. 困っていることを解決するには</h3><p>「よくあるご質問」で知りたい項目を選ぶと、回答が表示されます。</p>
+      <h3>3. 質問を送るには</h3><p>「よくあるご質問」にないご質問は、「質問はこちらから」のフォームをご利用ください。</p>
+      <a href="https://forms.gle/u58HFpGwh5KB6MiB9" target="_blank" rel="noopener noreferrer" class="button"><svg class="icon icon-small"><use href="#i-send"/></svg>質問フォームを開く ↗</a>
+    </article><a class="back" href="#home">← トップページに戻る</a>
+  </div></div></main>
+
+  <!-- 4. FAQ一覧。質問は faq-data.js から自動的に表示します -->
+  <main class="page" id="page-faq" hidden><div class="container"><div class="page-inner">
+    <div class="page-intro"><span class="icon-tile"><svg class="icon"><use href="#i-faq"/></svg></span><div><p class="eyebrow">FREQUENTLY ASKED QUESTIONS</p><h1 class="page-heading">よくあるご質問</h1><p class="page-lead">質問をクリックすると、詳しい回答が表示されます。</p></div></div>
+    <div id="faq-list" class="faq-list"><p class="page-lead">質問を読み込んでいます…</p></div>
+    <section class="form-cta"><span class="icon-tile"><svg class="icon"><use href="#i-send"/></svg></span><div class="form-cta-body"><h2>質問はこちらから</h2><p>よくあるご質問を見ても解決しないことや、日頃から気になっていることはありませんか？ いただいたご質問をもとに、FAQを随時更新します。お気軽にお寄せください。</p><a class="button" href="https://forms.gle/u58HFpGwh5KB6MiB9" target="_blank" rel="noopener noreferrer">質問フォームを開く ↗</a></div></section>
+    <a class="back" href="#home">← トップページに戻る</a>
+  </div></div></main>
+
+  <!-- 5. FAQ回答。質問をクリックしたときに faq-data.js の回答を表示します -->
+  <main class="page" id="page-faq-detail" hidden><div class="container"><div class="page-inner">
+    <div class="page-intro"><span class="icon-tile"><svg class="icon"><use id="faq-detail-icon" href="#i-faq"/></svg></span><div><p class="eyebrow" id="faq-detail-number">FAQ</p><h1 class="page-heading" id="faq-detail-question"></h1><p class="page-lead" id="faq-detail-lead"></p></div></div>
+    <article class="card article" id="faq-detail-answer"><p class="answer-label">A. 回答</p></article>
+    <a class="back" href="#faq">← よくあるご質問に戻る</a>
+  </div></div></main>
+
+  <!-- 6. 広告を外す場合の準備中ページ -->
+  <main class="page" id="page-remove-ads" hidden><div class="container"><div class="page-inner">
+    <p class="eyebrow">INFORMATION</p><h1 class="page-heading">広告を外す場合はこちら</h1>
+    <div class="card preparing"><span class="symbol" aria-hidden="true"><svg class="icon"><use href="#i-hourglass"/></svg></span><h2>現在準備中</h2><p class="lead">こちらのご案内は現在準備中です。しばらくお待ちください。</p></div>
+    <a class="back" href="#home">← トップページに戻る</a>
+  </div></div></main>
+
+  <!-- 全ページ共通の最下部案内。準備中ページでは非表示 -->
+  <aside class="bottom-ad" id="bottom-ad"><div class="container"><a href="#remove-ads">
+    <span class="icon-tile"><svg class="icon"><use href="#i-ads"/></svg></span>
+    <span class="ad-label">広告を外す場合はこちら<small>詳しい内容はリンク先をご確認ください。</small></span><span class="arrow" aria-hidden="true">→</span>
+  </a></div></aside>
+  <footer><div class="container"><strong>中井晴太 LINE専用ページ</strong><p>© 2026 NAKAI SEITA</p><p>※ 個人作成の案内ページです。LINE・YouTubeの公式サイトではありません。</p></div></footer>
+
+  <!-- FAQの編集はこのファイルではなく、別ファイル faq-data.js で行います -->
+  <script src="./faq-data.js"></script>
+  <script>
+    (() => {
+      const staticPages = ["home", "notice", "usage", "faq", "remove-ads"];
+      const pages = Object.fromEntries(
+        staticPages.map(name => [name, document.getElementById("page-" + name)])
+      );
+      pages["faq-detail"] = document.getElementById("page-faq-detail");
+
+      const menuButton = document.getElementById("menu-button");
+      const menuPanel = document.getElementById("menu-panel");
+      const menuWrap = document.getElementById("menu-wrap");
+      const bottomAd = document.getElementById("bottom-ad");
+      const faqList = document.getElementById("faq-list");
+      const titles = {
+        home: "中井晴太 LINE専用ページ",
+        notice: "お知らせ",
+        usage: "ご利用について",
+        faq: "よくあるご質問",
+        "remove-ads": "広告を外す場合はこちら"
+      };
+
+      // FAQデータは別ファイルに保存。IDの重複や未入力を除いて読み込みます。
+      const usedIds = new Set();
+      const faqs = (Array.isArray(window.FAQ_ITEMS) ? window.FAQ_ITEMS : [])
+        .filter(item => {
+          if (!item || typeof item.id !== "string" ||
+              !/^faq-[a-z0-9-]+$/.test(item.id) ||
+              usedIds.has(item.id) ||
+              typeof item.question !== "string" || !item.question.trim() ||
+              typeof item.summary !== "string" || !item.summary.trim()) return false;
+          usedIds.add(item.id);
+          return true;
+        });
+      const faqById = new Map(faqs.map(item => [item.id, item]));
+      const allowedIcons = new Set(["i-faq", "i-video", "i-guide", "i-news", "i-chat"]);
+      const iconOf = item => allowedIcons.has(item.icon) ? item.icon : "i-faq";
+
+      function makeIcon(symbol) {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("class", "icon");
+        const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+        use.setAttribute("href", "#" + symbol);
+        svg.append(use);
+        return svg;
+      }
+
+      function makeText(tag, content, className) {
+        const el = document.createElement(tag);
+        if (className) el.className = className;
+        el.textContent = content || "";
+        return el;
+      }
+
+      function renderFaqList() {
+        faqList.replaceChildren();
+        if (!faqs.length) {
+          faqList.append(makeText("p", "現在公開中のご質問はありません。質問フォームからお気軽にお寄せください。", "page-lead"));
+          return;
+        }
+        faqs.forEach((item, index) => {
+          const link = document.createElement("a");
+          link.className = "card faq-item";
+          link.href = "#" + item.id;
+          const tile = makeText("span", "", "icon-tile");
+          tile.append(makeIcon(iconOf(item)));
+          const content = makeText("span", "", "faq-item-main");
+          const n = String(index + 1).padStart(2, "0");
+          content.append(
+            makeText("small", "Q." + n + " / " + (item.category || "ご質問")),
+            makeText("strong", item.question)
+          );
+          const arrow = makeText("span", "→", "arrow");
+          arrow.setAttribute("aria-hidden", "true");
+          link.append(tile, content, arrow);
+          faqList.append(link);
+        });
+      }
+
+      function renderFaqDetail(item) {
+        const num = String(faqs.indexOf(item) + 1).padStart(2, "0");
+        document.getElementById("faq-detail-number").textContent = "FAQ / Q." + num;
+        document.getElementById("faq-detail-question").textContent = item.question;
+        const lead = document.getElementById("faq-detail-lead");
+        lead.textContent = item.lead || "ご質問についてご案内します。";
+        document.getElementById("faq-detail-icon").setAttribute("href", "#" + iconOf(item));
+        const answer = document.getElementById("faq-detail-answer");
+        answer.replaceChildren(
+          makeText("p", "A. 回答", "answer-label"),
+          makeText("p", item.summary, "answer-main")
+        );
+        if (Array.isArray(item.answer)) {
+          item.answer.filter(text => typeof text === "string" && text.trim())
+            .forEach(text => answer.append(makeText("p", text)));
+        }
+        if (typeof item.note === "string" && item.note.trim()) {
+          answer.append(makeText("div", item.note, "note"));
+        }
+      }
+
+      function closeMenu() {
+        menuPanel.hidden = true;
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "メニューを開く");
+      }
+      menuButton.addEventListener("click", () => {
+        const open = menuPanel.hidden;
+        menuPanel.hidden = !open;
+        menuButton.setAttribute("aria-expanded", String(open));
+        menuButton.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
+      });
+      menuPanel.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
+      document.addEventListener("click", event => {
+        if (!menuWrap.contains(event.target)) closeMenu();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeMenu();
+      });
+
+      function render() {
+        const hash = decodeURIComponent(location.hash.replace(/^#/, ""));
+        const selectedFaq = faqById.get(hash);
+        const current = selectedFaq ? "faq-detail" :
+          (hash === "guide" ? "home" : (staticPages.includes(hash) ? hash : "home"));
+        Object.entries(pages).forEach(([name, page]) => { page.hidden = name !== current; });
+        bottomAd.hidden = current === "remove-ads";
+        if (selectedFaq) renderFaqDetail(selectedFaq);
+        const title = selectedFaq ? selectedFaq.question : titles[current];
+        document.title = (current === "home" ? "" : title + " | ") + titles.home;
+        closeMenu();
+        if (hash === "guide") {
+          requestAnimationFrame(() =>
+            document.getElementById("guide").scrollIntoView({ behavior: "instant", block: "start" })
+          );
+        } else {
+          window.scrollTo({ top: 0, behavior: "instant" });
+        }
+      }
+      renderFaqList();
+      window.addEventListener("hashchange", render);
+      render();
+    })();
+  </script>
+</body>
+</html>
