@@ -331,8 +331,8 @@
   </a></div></aside>
   <footer><div class="container"><strong>中井晴太 LINE専用ページ</strong><p>© 2026 NAKAI SEITA</p><p>※ 個人作成の案内ページです。LINE・YouTubeの公式サイトではありません。</p></div></footer>
 
-  <!-- FAQの編集はこのファイルではなく、別ファイル faq-data.js で行います -->
-  <script src="./faq-data.js?v=2"></script>
+  <!-- FAQの質問・回答は faq-data.js だけで管理します。
+       index.html の更新後は、FAQを追加するたびにこのファイルを編集する必要はありません。 -->
   <script>
     (() => {
       const staticPages = ["home", "notice", "usage", "faq", "remove-ads"];
@@ -354,10 +354,17 @@
         "remove-ads": "広告を外す場合はこちら"
       };
 
-      // FAQデータは別ファイルに保存。IDの重複や未入力を除いて読み込みます。
-      const usedIds = new Set();
-      const faqs = (Array.isArray(window.FAQ_ITEMS) ? window.FAQ_ITEMS : [])
-        .filter(item => {
+      // FAQの表示処理は、外部ファイルの読み込み完了後に行います。
+      let faqs = [];
+      let faqById = new Map();
+      let faqReady = false;
+      const allowedIcons = new Set(["i-faq", "i-video", "i-guide", "i-news", "i-chat"]);
+      const iconOf = item => allowedIcons.has(item.icon) ? item.icon : "i-faq";
+
+      function setFaqData(items) {
+        // 同じIDや未入力の項目は表示しません。
+        const usedIds = new Set();
+        faqs = items.filter(item => {
           if (!item || typeof item.id !== "string" ||
               !/^faq-[a-z0-9-]+$/.test(item.id) ||
               usedIds.has(item.id) ||
@@ -366,9 +373,38 @@
           usedIds.add(item.id);
           return true;
         });
-      const faqById = new Map(faqs.map(item => [item.id, item]));
-      const allowedIcons = new Set(["i-faq", "i-video", "i-guide", "i-news", "i-chat"]);
-      const iconOf = item => allowedIcons.has(item.icon) ? item.icon : "i-faq";
+        faqById = new Map(faqs.map(item => [item.id, item]));
+        faqReady = true;
+        renderFaqList();
+        render();
+      }
+
+      function showFaqLoadError() {
+        faqReady = true;
+        faqList.replaceChildren(makeText(
+          "p",
+          "質問の読み込みに失敗しました。時間をおいてページを再読み込みしてください。",
+          "page-lead"
+        ));
+        render();
+      }
+
+      function loadLatestFaqData() {
+        // 毎回異なるURLで読み込み、ブラウザの古いキャッシュを使わないようにします。
+        // onload後に一覧・回答を描画するため、通信が遅くても安全です。
+        const script = document.createElement("script");
+        script.src = "./faq-data.js?v=" + Date.now();
+        script.async = true;
+        script.onload = () => {
+          if (Array.isArray(window.FAQ_ITEMS)) {
+            setFaqData(window.FAQ_ITEMS);
+          } else {
+            showFaqLoadError();
+          }
+        };
+        script.onerror = showFaqLoadError;
+        document.head.appendChild(script);
+      }
 
       function makeIcon(symbol) {
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -454,8 +490,11 @@
       function render() {
         const hash = decodeURIComponent(location.hash.replace(/^#/, ""));
         const selectedFaq = faqById.get(hash);
+        const isFaqLink = /^faq-[a-z0-9-]+$/.test(hash);
+        // 個別FAQのURLを直接開いた場合も、データ読み込み中はFAQ一覧を表示します。
         const current = selectedFaq ? "faq-detail" :
-          (hash === "guide" ? "home" : (staticPages.includes(hash) ? hash : "home"));
+          (isFaqLink ? "faq" :
+          (hash === "guide" ? "home" : (staticPages.includes(hash) ? hash : "home")));
         Object.entries(pages).forEach(([name, page]) => { page.hidden = name !== current; });
         bottomAd.hidden = current === "remove-ads";
         if (selectedFaq) renderFaqDetail(selectedFaq);
@@ -470,9 +509,9 @@
           window.scrollTo({ top: 0, behavior: "instant" });
         }
       }
-      renderFaqList();
       window.addEventListener("hashchange", render);
-      render();
+      render(); // 読み込み中は「質問を読み込んでいます…」を表示
+      loadLatestFaqData(); // 読み込み後に一覧と回答を更新
     })();
   </script>
 </body>
